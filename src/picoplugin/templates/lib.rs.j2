@@ -1,0 +1,15 @@
+use picoplugin::plugin::prelude::*;
+
+{% for service in cfg.services -%}
+mod {{service.name}};
+{% endfor %}
+{% for service in cfg.services -%}
+use {{service.name}}::{{service_name(service)}};
+{% endfor %}
+#[service_registrar]
+pub fn service_registrar(reg: &mut ServiceRegistry) {
+    {% for service in cfg.services -%}
+    use {{service.name}}::{{service_name(service)}};
+    reg.add("{{service.name}}_service", "0.1.0", {{service_name(service)}}::new);
+    {% endfor %}
+}

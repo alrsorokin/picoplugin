@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools >= 66.1.0, <= 72.1.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "picoplugin"
+version = "0.0.1"
+authors = [
+  { name="Alexandr Sorokin", email="awekening2@gmail.com" },
+]
+description = "Generator picodata plugin"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX",
+]
+
+[project.urls]
+Homepage = "https://github.com/alrsorokin/picoplugin"
+Issues = "https://github.com/alrsorokin/picoplugin/issues"
+
+[project.scripts]
+picoplugin = "picoplugin:main"
+
+[tool.setuptools.package-data]
+"*" = ["*.j2"]

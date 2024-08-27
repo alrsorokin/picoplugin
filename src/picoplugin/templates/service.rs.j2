@@ -1,0 +1,59 @@
+use picoplugin::plugin::interface::CallbackResult;
+use picoplugin::plugin::prelude::*;
+use picoplugin::system::tarantool::tlua;
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize, Debug, tlua::Push)]
+pub struct {{service_cfg_name(service)}} {}
+
+pub struct {{service_name(service)}} {
+    cfg: Option<{{service_cfg_name(service)}}>,
+}
+
+impl Service for {{service_name(service)}} {
+    type Config = {{service_cfg_name(service)}};
+
+    /// Called on the governor before the new configuration on THIS plugin
+    /// is committed/applied.
+    /// If an error is returned, then ALTER command is aborted.
+    fn on_config_validate(&self, configuration: Self::Config) -> CallbackResult<()> {
+        todo!();
+    }
+
+    /// Invoked on every instance after SET OPTION is committed to Raft.
+    fn on_config_change(
+        &mut self,
+        ctx: &PicoContext,
+        new_cfg: Self::Config,
+        old_cfg: Self::Config,
+    ) -> CallbackResult<()> {
+        todo!();
+    }
+
+    /// Called on healthcheck, if error is returned,
+    /// healthcheck will be considered as failed.
+    fn on_health_check(&self, context: &PicoContext) -> CallbackResult<()> {
+        todo!();
+    }
+
+    /// Called at instance start for an enabled plugin or on ALTER PLUGIN ENABLE
+    fn on_start(&mut self, context: &PicoContext, config: Self::Config) -> CallbackResult<()> {
+        todo!();
+    }
+
+    /// Called on instance stop or ALTER PLUGIN DISABLE
+    fn on_stop(&mut self, context: &PicoContext) -> CallbackResult<()> {
+        todo!();
+    }
+
+    /// Called after replicaset master is changed
+    fn on_leader_change(&mut self, context: &PicoContext) -> CallbackResult<()> {
+        todo!();
+    }
+}
+
+impl {{service_name(service)}} {
+    pub fn new() -> Self {
+        {{service_name(service)}} { cfg: None }
+    }
+}

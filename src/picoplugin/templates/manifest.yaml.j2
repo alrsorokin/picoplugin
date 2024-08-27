@@ -1,0 +1,8 @@
+name: {{cfg.name}}
+description: {{cfg.description}}
+version: 0.1.0
+services:
+{% for service in cfg.services -%}
+- name: {{service.name}}
+  description: {{service.description}}
+{% endfor %}

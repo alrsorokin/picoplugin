@@ -1,0 +1,10 @@
+[package]
+name = "{{cfg.name}}"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+picoplugin = { {{picoplugin}} }
+
+[lib]
+crate-type = ["lib", "cdylib"]
