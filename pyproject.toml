@@ -8,7 +8,7 @@ version = "0.0.1"
 authors = [
   { name="Alexandr Sorokin", email="awekening2@gmail.com" },
 ]
-description = "Generator picodata plugin"
+description = "Tool for generating picodata plugins"
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
@@ -24,7 +24,7 @@ Homepage = "https://github.com/alrsorokin/picoplugin"
 Issues = "https://github.com/alrsorokin/picoplugin/issues"
 
 [project.scripts]
-picoplugin = "picoplugin:main"
+picoplugin = "picoplugin.__main__:main"
 
 [tool.setuptools.package-data]
 "*" = ["*.j2"]

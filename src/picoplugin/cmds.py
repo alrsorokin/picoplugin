@@ -2,9 +2,9 @@ import os
 import subprocess
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-
 env = Environment(
-    loader=FileSystemLoader("src/picoplugin/templates"),
+    loader=FileSystemLoader(os.path.join(
+        os.path.dirname(__file__), 'templates')),
     autoescape=select_autoescape()
 )
 env.globals['service_name'] = lambda service: f"{service.name.capitalize()}Service"
@@ -18,8 +18,7 @@ def generate_manifest(cfg):
 
 def generate_dependencies(cfg):
     # todo: get picoplugin version from crates.io
-    picoplugin = 'git = "ssh://git@git.picodata.io/picodata/picodata/picodata.git", rev = "3cbf2bb21a96f478eaf5542a60c78103507e1ca0"'
-
+    picoplugin = 'git = "ssh://git@git.picodata.io/picodata/picodata/picodata.git", rev = "25264bc35e4dd3a83d1aecbe006f332e8b9517e5"'
     template = env.get_template("cargo.toml.j2")
     template.stream(cfg=cfg, picoplugin=picoplugin).dump(
         os.path.join(cfg.path, "Cargo.toml"))
@@ -42,21 +41,22 @@ def registry_services(cfg):
 
 def template(cargo_cmd):
     def generate(cfg):
-        cfg.path = cargo_cmd(cfg)
-        generate_dependencies(cfg)
-        generate_manifest(cfg)
-        generate_services(cfg)
-        registry_services(cfg)
+        try:
+            cargo_cmd(cfg)
+            generate_dependencies(cfg)
+            generate_manifest(cfg)
+            generate_services(cfg)
+            registry_services(cfg)
+        except Exception as exc:
+            print(f"Plugin generation error: {repr(exc)}")
     return generate
 
 
 @template
-def cmd_init(args) -> str:
+def cmd_init(args):
     subprocess.run(["cargo", "init", "--lib", "--name", args.name], check=True)
-    return ""
 
 
 @template
-def cmd_new(args) -> str:
+def cmd_new(args):
     subprocess.run(["cargo", "new", "--lib", args.name], check=True)
-    return args.name
